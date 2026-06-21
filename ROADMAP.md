@@ -37,6 +37,7 @@ asynchronous clients. Versioning follows [SemVer](https://semver.org/).
 
 ## Future
 
-- [ ] Publish to PyPI (distribution name TBD — `revolut-python` is taken on PyPI)
+- [x] Packaging ready for PyPI as `revolut-merchant` (`revolut-python` taken); release workflow via Trusted Publishing
+- [ ] First PyPI release (`v0.1.0` tag) after sandbox verification
 - [ ] Optional: Business API module
 - [ ] Sphinx / mkdocs documentation site
