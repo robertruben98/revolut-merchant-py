@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "revolut-python"
+name = "revolut-merchant"
 version = "0.1.0"
 description = "Typed Python client for the Revolut Merchant API (sync + async)."
 readme = "README.md"
