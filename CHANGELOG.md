@@ -6,6 +6,23 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-06-22
+
+Verified every endpoint against the live Revolut sandbox (#23).
+
+### Added
+- `Order.checkout_url` and `Order.authorisation_type` (both returned by the live
+  Merchant API).
+
+### Removed
+- `disputes` and `report_runs` resources (and their models). These endpoints do
+  not exist in the Merchant API — every documented path returned `404` in the
+  sandbox; they were included speculatively in 1.0.0. Removed as a correction.
+
+### Verified
+- Confirmed working against the sandbox: orders (create/retrieve/list/payments),
+  customers (+ payment methods), payouts, subscriptions, locations, webhooks.
+
 ## [1.0.0] - 2026-06-21
 
 ### Added

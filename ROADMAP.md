@@ -45,23 +45,23 @@ asynchronous clients. Versioning follows [SemVer](https://semver.org/).
 - [x] Auto-pagination helpers: `iter()` over list endpoints (cursor / `page_token`)
 - [x] Saved payment methods / tokenization CRUD (list / retrieve / update / delete)
 - [x] Live sandbox integration tests (harness under `tests/integration`, gated by `REVOLUT_SECRET_KEY`)
-- [ ] Verify endpoint path strings against a real sandbox (#23 — needs sandbox credentials; run the integration suite)
+- [x] Verify endpoint path strings against a real sandbox (#23 — done in 1.0.1; disputes/report-runs found not to exist and were removed)
 
 ## v0.6.0 — Remaining resources & docs site ✅ (shipped)
 
 - [x] `subscriptions` resource
 - [x] `payouts` resource
-- [x] `disputes` resource
-- [x] `report runs` and `locations` resources
+- [x] `locations` resource
 - [x] Documentation site (mkdocs-material) published from CI
+- [~] `disputes` / `report runs` — not part of the Merchant API (404 in sandbox); removed in 1.0.1
 
 ## v1.0.0 — Stable API ✅ (shipped)
 
 - [x] Public API frozen (guarded by a test); no breaking changes expected
 - [x] Documented deprecation policy and SemVer commitment (README)
-- [x] All in-scope Merchant API resources covered
+- [x] All in-scope Merchant API resources covered (verified against sandbox)
 - [x] Hardening: debug logging, per-request timeout override, backoff jitter
-- [ ] Run the live-sandbox suite with real credentials as the final gate (#23)
+- [x] Live-sandbox suite run with real credentials (1.0.1)
 
 ## Future / maybe
 

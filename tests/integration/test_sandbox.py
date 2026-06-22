@@ -6,8 +6,8 @@ secret key is provided:
     REVOLUT_SECRET_KEY=sk_... pytest tests/integration -v
 
 They are excluded from normal/CI runs (which stay hermetic) because no key is
-set there. Use them to confirm endpoint paths and field names against a live
-sandbox (roadmap issue #23) and as the release gate (#22).
+set there. They confirm endpoint paths and field names against a live sandbox
+(roadmap issue #23) and act as the release gate.
 """
 
 from __future__ import annotations
@@ -35,19 +35,34 @@ def client():
 def test_create_and_retrieve_order(client):
     order = client.orders.create(amount=1000, currency="GBP")
     assert order.id
+    assert order.public_token
+    assert order.checkout_url  # returned by the live API
     fetched = client.orders.retrieve(order.id)
     assert fetched.id == order.id
-    assert fetched.public_token
 
 
 def test_list_orders(client):
-    orders = client.orders.list(limit=5)
-    assert isinstance(orders, list)
+    assert isinstance(client.orders.list(limit=5), list)
 
 
-def test_capture_and_refund_flow(client):
-    """Manual-capture order: authorise is driven by the hosted page, so this
-    only asserts the create + capture endpoints respond as documented. Adapt
-    once a sandbox card flow authorises the order."""
+def test_order_payments_endpoint(client):
+    order = client.orders.create(amount=500, currency="GBP")
+    assert isinstance(client.payments.list_for_order(order.id), list)
+
+
+def test_customer_lifecycle_and_payment_methods(client):
+    customer = client.customers.create(full_name="Test User", email="t@example.com")
+    assert customer.id
+    assert isinstance(client.payment_methods.list(customer.id), list)
+
+
+def test_list_endpoints_respond(client):
+    assert isinstance(client.payouts.list(), list)
+    assert isinstance(client.subscriptions.list(), list)
+    assert isinstance(client.locations.list(), list)
+    assert isinstance(client.webhooks.list(), list)
+
+
+def test_manual_capture_order_created(client):
     order = client.orders.create(amount=500, currency="GBP", capture_mode="manual")
     assert order.state in {"pending", "processing", "authorised"}
