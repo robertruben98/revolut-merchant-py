@@ -1,8 +1,6 @@
-"""Tests for subscriptions, payouts, disputes, report runs and locations."""
+"""Tests for subscriptions, payouts and locations resources."""
 
 from __future__ import annotations
-
-import json
 
 import httpx
 import respx
@@ -51,50 +49,6 @@ def test_payouts(client):
     )
     assert client.payouts.retrieve("po_1").state == "completed"
     assert [p.id for p in client.payouts.list()] == ["po_1"]
-
-
-# --- disputes ---------------------------------------------------------------
-@respx.mock
-def test_disputes(client):
-    respx.get(f"{BASE}/api/disputes/dp_1").mock(
-        return_value=httpx.Response(200, json={"id": "dp_1", "state": "needs_response"})
-    )
-    respx.get(f"{BASE}/api/disputes").mock(
-        return_value=httpx.Response(200, json={"disputes": [{"id": "dp_1"}]})
-    )
-    respond = respx.post(f"{BASE}/api/disputes/dp_1/respond").mock(
-        return_value=httpx.Response(200, json={"id": "dp_1", "state": "under_review"})
-    )
-    assert client.disputes.retrieve("dp_1").state == "needs_response"
-    assert [d.id for d in client.disputes.list()] == ["dp_1"]
-    assert client.disputes.respond("dp_1", evidence={"note": "ok"}).state == "under_review"
-    assert json.loads(respond.calls.last.request.content) == {"evidence": {"note": "ok"}}
-
-
-@respx.mock
-async def test_async_disputes_respond(async_client):
-    respx.post(f"{BASE}/api/disputes/dp_1/respond").mock(
-        return_value=httpx.Response(200, json={"id": "dp_1"})
-    )
-    assert (await async_client.disputes.respond("dp_1")).id == "dp_1"
-
-
-# --- report runs ------------------------------------------------------------
-@respx.mock
-def test_report_runs(client):
-    create = respx.post(f"{BASE}/api/report-runs").mock(
-        return_value=httpx.Response(201, json={"id": "rr_1", "state": "pending"})
-    )
-    respx.get(f"{BASE}/api/report-runs/rr_1").mock(
-        return_value=httpx.Response(200, json={"id": "rr_1", "state": "completed"})
-    )
-    respx.get(f"{BASE}/api/report-runs").mock(
-        return_value=httpx.Response(200, json={"report_runs": [{"id": "rr_1"}]})
-    )
-    assert client.report_runs.create(report_type="payments").state == "pending"
-    assert client.report_runs.retrieve("rr_1").state == "completed"
-    assert [r.id for r in client.report_runs.list()] == ["rr_1"]
-    assert json.loads(create.calls.last.request.content) == {"report_type": "payments"}
 
 
 # --- locations --------------------------------------------------------------

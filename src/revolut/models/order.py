@@ -23,12 +23,14 @@ class Order(RevolutModel):
     id: str | None = None
     token: str | None = None
     public_id: str | None = None
+    checkout_url: str | None = None
     type: str | None = None
     state: str | None = None
     amount: int | None = None
     currency: str | None = None
     outstanding_amount: int | None = None
     capture_mode: str | None = None
+    authorisation_type: str | None = None
     enforce_challenge: str | None = None
     related_order_id: str | None = None
     customer: Customer | None = None

@@ -159,14 +159,12 @@ print(wh.signing_secret)  # store this to verify future deliveries
 
 ## More resources
 
-The client also exposes `subscriptions`, `payouts`, `disputes`, `report_runs`
-and `locations`, each with the same sync/async parity:
+The client also exposes `subscriptions`, `payouts` and `locations`, each with the
+same sync/async parity:
 
 ```python
 client.subscriptions.list()
 client.payouts.retrieve("po_...")
-client.disputes.respond("dp_...", evidence={...})
-client.report_runs.create(report_type="payments")
 client.locations.create(name="Web", type="online")
 ```
 
