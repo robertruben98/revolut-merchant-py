@@ -10,7 +10,7 @@ A typed Python client for the [Revolut Merchant API](https://developer.revolut.c
 — online payments (orders, payments, refunds, customers) and webhooks — with
 **both synchronous and asynchronous** clients.
 
-> Status: early development (v0.1.0). See the [ROADMAP](ROADMAP.md).
+> Stable (v1.x, follows SemVer). See the [ROADMAP](ROADMAP.md).
 
 ## Features
 
@@ -230,7 +230,5 @@ REVOLUT_SECRET_KEY=sk_... pytest tests/integration -v
 ```
 
 ## License
-
-[MIT](LICENSE)
 
 [MIT](LICENSE)
