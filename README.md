@@ -57,10 +57,12 @@ Async — the same API, awaited:
 import asyncio
 from revolut import AsyncRevolutMerchantClient
 
+
 async def main():
     async with AsyncRevolutMerchantClient(secret_key="sk_...") as client:
         order = await client.orders.create(amount=1000, currency="GBP")
         print(order.id)
+
 
 asyncio.run(main())
 ```
@@ -74,23 +76,24 @@ currencies:
 ```python
 from revolut import Money
 
-Money.from_major("10.99", "GBP").amount   # 1099
-Money.from_major("1000", "JPY").amount    # 1000  (JPY has no minor unit)
-Money(1234, "BHD").to_major()             # Decimal("1.234")
+Money.from_major("10.99", "GBP").amount  # 1099
+Money.from_major("1000", "JPY").amount  # 1000  (JPY has no minor unit)
+Money(1234, "BHD").to_major()  # Decimal("1.234")
 ```
 
 ## Orders
 
 ```python
 order = client.orders.create(
-    amount=5000, currency="EUR",
-    capture_mode="manual",                      # authorise now, capture later
+    amount=5000,
+    currency="EUR",
+    capture_mode="manual",  # authorise now, capture later
     merchant_order_data={"reference": "INV-42"},
-    idempotency_key="INV-42",                   # safe to retry
+    idempotency_key="INV-42",  # safe to retry
 )
-client.orders.capture(order.id, amount=5000)    # capture authorised funds
-client.orders.cancel(order.id)                  # or cancel before capture
-client.orders.list(limit=50, state="completed") # paginated listing
+client.orders.capture(order.id, amount=5000)  # capture authorised funds
+client.orders.cancel(order.id)  # or cancel before capture
+client.orders.list(limit=50, state="completed")  # paginated listing
 ```
 
 ## Refunds
@@ -141,10 +144,10 @@ from revolut import verify_signature, SignatureVerificationError
 
 try:
     event = verify_signature(
-        raw_body=request.body,                                  # bytes or str
+        raw_body=request.body,  # bytes or str
         signature_header=request.headers["Revolut-Signature"],
         timestamp_header=request.headers["Revolut-Request-Timestamp"],
-        signing_secret="wsk_...",                               # from webhook creation
+        signing_secret="wsk_...",  # from webhook creation
     )
     print(event.event, event.order_id)
 except SignatureVerificationError:
@@ -192,9 +195,11 @@ tracing with the `revolut` logger:
 
 ```python
 import logging
+
 logging.getLogger("revolut").setLevel(logging.DEBUG)
 
 from revolut import RetryConfig
+
 client = RevolutMerchantClient(secret_key="sk_...", retry=RetryConfig(max_retries=4, jitter=0.3))
 ```
 

@@ -7,15 +7,16 @@ Amounts are integers in minor units (e.g. `1099` = £10.99).
 ```python
 from revolut import Money
 
-Money.from_major("10.99", "GBP").amount   # 1099
-Money(1234, "BHD").to_major()             # Decimal("1.234")
+Money.from_major("10.99", "GBP").amount  # 1099
+Money(1234, "BHD").to_major()  # Decimal("1.234")
 ```
 
 ## Orders
 
 ```python
 order = client.orders.create(
-    amount=5000, currency="EUR",
+    amount=5000,
+    currency="EUR",
     capture_mode="manual",
     merchant_order_data={"reference": "INV-42"},
     idempotency_key="INV-42",
